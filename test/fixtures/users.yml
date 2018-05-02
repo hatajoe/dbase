@@ -1,17 +1,17 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  [provider: MyString
-  uid: MyString
-  first_name: MyString
-  last_name: MyString
-  email: MyString
+  provider: google_oauth2
+  uid: 100000000000000000000
+  first_name: Joe
+  last_name: Strummer
+  email: joe@strummer.com
   picture: 
 
 two:
-  [provider: MyString
-  uid: MyString
-  first_name: MyString
-  last_name: MyString
-  email: MyString
+  provider: google_oauth2
+  uid: 200000000000000000000
+  first_name: Tim
+  last_name: Armstrong
+  email: tim@armstrong.com
   picture: 
