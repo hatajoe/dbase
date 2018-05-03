@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+  has_many :organization_users
+  has_many :organizations, through: :organization_users
+
   #
   # @param [Object] auth
   # @return [User]

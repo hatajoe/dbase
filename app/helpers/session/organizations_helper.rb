@@ -1,0 +1,2 @@
+module Session::OrganizationsHelper
+end
