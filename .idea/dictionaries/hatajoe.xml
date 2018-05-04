@@ -2,6 +2,7 @@
   <dictionary name="hatajoe">
     <words>
       <w>authenticatable</w>
+      <w>octokit</w>
       <w>omniauth</w>
       <w>sessionable</w>
     </words>

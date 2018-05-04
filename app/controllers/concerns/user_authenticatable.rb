@@ -10,6 +10,9 @@ module UserAuthenticatable
     redirect_to session_users_path unless user_signed_in?
   end
 
+  #
+  # @return [User]
+  #
   def current_user
     @current_user ||= User.find_by(id: user_id)
   end

@@ -1,7 +1,11 @@
 require 'test_helper'
 
 class OrganizationTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test 'should increase count' do
+    assert_difference('OrganizationRepository.count', 2) do
+      organization = Organization.first
+      organization.build_organization_repositories(Repository.find(1, 2))
+      organization.organization_repositories.map(&:save)
+    end
+  end
 end

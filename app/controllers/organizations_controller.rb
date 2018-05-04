@@ -4,6 +4,7 @@
 class OrganizationsController < ApplicationController
   include UserAuthenticatable
   include OrganizationAuthenticatable
+  include GithubAccessible
 
   before_action :user_authenticate
   before_action :organization_authenticate, only: %i[edit update destroy]
@@ -32,10 +33,13 @@ class OrganizationsController < ApplicationController
   # POST /organizations
   # POST /organizations.json
   def create
-    @organization = @current_user.organizations.build(organization_params)
-
+    repositories = repos(organization_params[:github_api_token])
+    Repository.import_repositories(repositories)
+    @organization = current_user.organizations.build(organization_params).tap do |o|
+      o.try(:build_organization_repositories, repositories) && o
+    end
     respond_to do |format|
-      if @current_user.save
+      if current_user.save
         format.html { redirect_to @organization, notice: 'Organization was successfully created.' }
         format.json { render :show, status: :created, location: @organization }
       else
@@ -78,6 +82,6 @@ class OrganizationsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def organization_params
-    params.require(:organization).permit(:uid, :name)
+    params.require(:organization).permit(:uid, :name, :github_api_token)
   end
 end

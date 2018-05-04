@@ -10,26 +10,46 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180502134751) do
+ActiveRecord::Schema.define(version: 20180503143745) do
 
-  create_table "organization_users", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "organization_id"
+  create_table "organization_repositories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "organization_id"
+    t.bigint "repository_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id", "repository_id"], name: "organization_repository_unique", unique: true
+    t.index ["organization_id"], name: "index_organization_repositories_on_organization_id"
+    t.index ["repository_id"], name: "index_organization_repositories_on_repository_id"
+  end
+
+  create_table "organization_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "user_id"
+    t.bigint "organization_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["organization_id"], name: "index_organization_users_on_organization_id"
+    t.index ["user_id", "organization_id"], name: "user_organization_unique", unique: true
     t.index ["user_id"], name: "index_organization_users_on_user_id"
   end
 
-  create_table "organizations", force: :cascade do |t|
+  create_table "organizations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "uid"
     t.string "name"
+    t.string "encrypted_github_api_token"
+    t.string "encrypted_github_api_token_iv"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["uid"], name: "index_organizations_on_uid", unique: true
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "repositories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "full_name"
+    t.string "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "provider"
     t.string "uid"
     t.string "first_name"
@@ -43,4 +63,8 @@ ActiveRecord::Schema.define(version: 20180502134751) do
     t.index ["uid"], name: "index_users_on_uid", unique: true
   end
 
+  add_foreign_key "organization_repositories", "organizations"
+  add_foreign_key "organization_repositories", "repositories"
+  add_foreign_key "organization_users", "organizations"
+  add_foreign_key "organization_users", "users"
 end

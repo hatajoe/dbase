@@ -21,6 +21,11 @@
     <%= form.text_field :name, id: :organization_name %>
   </div>
 
+  <div class="field">
+    <%= form.label :github_api_token %>
+    <%= form.text_field :github_api_token, id: :organization_github_api_token %>
+  </div>
+
   <div class="actions">
     <%= form.submit %>
   </div>
