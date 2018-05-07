@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180503143745) do
+ActiveRecord::Schema.define(version: 20180504044249) do
 
   create_table "organization_repositories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "organization_id"
@@ -42,6 +42,15 @@ ActiveRecord::Schema.define(version: 20180503143745) do
     t.index ["uid"], name: "index_organizations_on_uid", unique: true
   end
 
+  create_table "products", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "organization_id"
+    t.string "repository_name"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_products_on_organization_id"
+  end
+
   create_table "repositories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "full_name"
     t.string "url"
@@ -67,4 +76,5 @@ ActiveRecord::Schema.define(version: 20180503143745) do
   add_foreign_key "organization_repositories", "repositories"
   add_foreign_key "organization_users", "organizations"
   add_foreign_key "organization_users", "users"
+  add_foreign_key "products", "organizations"
 end

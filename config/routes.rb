@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   root 'dashboard#index'
   resources :organizations
+  resources :products
+  resources :repositories, only: %i[index]
 
   namespace :session do
     resources :users, only: %i[index new destroy]

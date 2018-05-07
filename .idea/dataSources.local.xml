@@ -11,5 +11,27 @@
       <user-name>root</user-name>
       <introspection-schemas>*:dbase_development</introspection-schemas>
     </data-source>
+    <data-source name="Rails dbase: test" uuid="09d645f8-b847-46f4-8702-871baf2ca976">
+      <database-info product="MySQL" version="5.7.17" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.46 ( Revision: 9cc87a48e75c2d2e87c1a293b2862ce651cb256e )">
+        <extra-name-characters>#@</extra-name-characters>
+        <identifier-quote-string>`</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="mixed" quoted-identifiers="upper" />
+      <user-name>root</user-name>
+      <introspection-schemas>*:dbase_test</introspection-schemas>
+    </data-source>
+    <data-source name="Rails dbase: development" uuid="e8f8528b-2099-4252-89f7-5f66d9e30b1c">
+      <database-info product="MySQL" version="5.7.17" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.46 ( Revision: 9cc87a48e75c2d2e87c1a293b2862ce651cb256e )">
+        <extra-name-characters>#@</extra-name-characters>
+        <identifier-quote-string>`</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="mixed" quoted-identifiers="upper" />
+      <user-name>root</user-name>
+      <introspection-schemas>*:dbase_development</introspection-schemas>
+    </data-source>
+    <data-source name="Rails dbase: production" uuid="ac5f09d2-3be9-47cd-9054-32034b29545a">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" />
+      <user-name>root</user-name>
+    </data-source>
   </component>
 </project>

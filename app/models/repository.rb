@@ -1,6 +1,7 @@
 class Repository < ApplicationRecord
   has_many :organization_repositories, dependent: :delete_all
   has_many :organizations, through: :organization_repositories
+  belongs_to :product, foreign_key: :full_name
 
   #
   # @param [Array<Repository>] repos
