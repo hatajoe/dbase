@@ -10,7 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180504044249) do
+ActiveRecord::Schema.define(version: 20180508142539) do
+
+  create_table "issues", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "milestone_id"
+    t.integer "number"
+    t.string "url"
+    t.string "state"
+    t.string "title"
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["milestone_id"], name: "index_issues_on_milestone_id"
+  end
+
+  create_table "milestones", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "repository_id"
+    t.integer "number"
+    t.string "title"
+    t.text "description"
+    t.string "url"
+    t.integer "open_issues"
+    t.integer "closed_issues"
+    t.datetime "due_on"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["repository_id"], name: "index_milestones_on_repository_id"
+  end
 
   create_table "organization_repositories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "organization_id"
@@ -51,6 +77,36 @@ ActiveRecord::Schema.define(version: 20180504044249) do
     t.index ["organization_id"], name: "index_products_on_organization_id"
   end
 
+  create_table "project_cards", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "project_column_id"
+    t.bigint "issue_id"
+    t.text "note"
+    t.string "content_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["issue_id"], name: "index_project_cards_on_issue_id"
+    t.index ["project_column_id"], name: "index_project_cards_on_project_column_id"
+  end
+
+  create_table "project_columns", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "project_id"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_project_columns_on_project_id"
+  end
+
+  create_table "projects", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "repository_id"
+    t.integer "number"
+    t.string "url"
+    t.string "name"
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["repository_id"], name: "index_projects_on_repository_id"
+  end
+
   create_table "repositories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "full_name"
     t.string "url"
@@ -72,9 +128,14 @@ ActiveRecord::Schema.define(version: 20180504044249) do
     t.index ["uid"], name: "index_users_on_uid", unique: true
   end
 
+  add_foreign_key "issues", "milestones"
+  add_foreign_key "milestones", "repositories"
   add_foreign_key "organization_repositories", "organizations"
   add_foreign_key "organization_repositories", "repositories"
   add_foreign_key "organization_users", "organizations"
   add_foreign_key "organization_users", "users"
   add_foreign_key "products", "organizations"
+  add_foreign_key "project_cards", "project_columns"
+  add_foreign_key "project_columns", "projects"
+  add_foreign_key "projects", "repositories"
 end

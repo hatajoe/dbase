@@ -6,7 +6,7 @@ module Session
     include UserSessionable
     include UserAuthenticatable
 
-    before_action :user_authenticate, only: %i[destroy]
+    before_action :user_authenticate, only: %i(destroy)
 
     def index; end
 

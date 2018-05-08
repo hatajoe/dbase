@@ -2,7 +2,7 @@ require 'test_helper'
 
 class RepositoryTest < ActiveSupport::TestCase
   test 'should increase count' do
-    assert_difference('Repository.count', 1) do
+    assert_difference('Repository.count', 0) do
       Repository.import_repositories(
         [
           Repository.new(

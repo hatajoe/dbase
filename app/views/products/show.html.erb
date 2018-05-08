@@ -15,5 +15,40 @@
   <%= @product.name %>
 </p>
 
-<%= link_to 'Edit', edit_product_path(@product) %> |
+<div>
+  <strong>Milestones:</strong><br>
+  <% @product.repository.milestones.each do |milestone| %>
+    <%= milestone.title %>
+    <ul>
+      <% milestone.issues.each do |issue| %>
+        <li><%= issue.title %></li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>
+
+<div>
+  <strong>Projects:</strong><br>
+  <% @product.repository.projects.each do |project| %>
+    <%= project.name %>
+    <ul>
+      <% project.project_columns.each do |columns| %>
+        <li>
+          <ul>
+            <%= columns.name %>
+            <% columns.project_cards.each do |card| %>
+              <% if card.note.present? %>
+                <li><%= card.note %></li>
+              <% end %>
+            <% end %>
+          </ul>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>
+
+
+
+<td><%= link_to 'Update', product_path(@product), method: :put %></td> |
 <%= link_to 'Back', products_path %>

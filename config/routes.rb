@@ -1,12 +1,12 @@
 Rails.application.routes.draw do
   root 'dashboard#index'
   resources :organizations
-  resources :products
-  resources :repositories, only: %i[index]
+  resources :products, only: %i(index show new create update destroy)
+  resources :repositories, only: %i(index)
 
   namespace :session do
-    resources :users, only: %i[index new destroy]
-    resources :organizations, only: %i[create destroy]
+    resources :users, only: %i(index new destroy)
+    resources :organizations, only: %i(create destroy)
   end
   scope module: :session do
     get 'auth/:provider/callback', to: 'users#create'

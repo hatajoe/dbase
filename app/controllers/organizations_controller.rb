@@ -7,8 +7,8 @@ class OrganizationsController < ApplicationController
   include GithubAccessible
 
   before_action :user_authenticate
-  before_action :organization_authenticate, only: %i[edit update destroy]
-  before_action :set_organization, only: %i[show edit update destroy]
+  before_action :organization_authenticate, only: %i(edit update destroy)
+  before_action :set_organization, only: %i(show edit update destroy)
 
   # GET /organizations
   # GET /organizations.json
@@ -33,9 +33,11 @@ class OrganizationsController < ApplicationController
   def create
     repositories = repos(organization_params[:github_api_token])
     Repository.import_repositories(repositories)
-    @organization = current_user.organizations.build(organization_params).tap do |o|
-      o.try(:build_organization_repositories, repositories) && o
-    end
+    # @organization = current_user.organizations.build(organization_params).tap do |o|
+    #   o.try(:build_organization_repositories, repositories)
+    # end
+    @organization = current_user.organizations.build(organization_params)
+    @organization.build_organization_repositories(repositories)
     respond_to do |format|
       if current_user.save
         format.html { redirect_to @organization, notice: 'Organization was successfully created.' }

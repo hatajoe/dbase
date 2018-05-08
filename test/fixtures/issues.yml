@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  milestone: one
+  number: 1
+  url: MyString
+  state: MyString
+  title: MyString
+  body: MyString
+
+two:
+  milestone: two
+  number: 1
+  url: MyString
+  state: MyString
+  title: MyString
+  body: MyString

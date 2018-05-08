@@ -1,10 +1,12 @@
 class ProductsController < ApplicationController
   include UserAuthenticatable
   include OrganizationAuthenticatable
+  include ProductSessionable
+  include GithubAccessible
 
   before_action :user_authenticate
   before_action :organization_authenticate
-  before_action :set_product, only: [:show, :edit, :update, :destroy]
+  before_action :set_product, only: [:show, :update, :destroy]
 
   # GET /products
   # GET /products.json
@@ -15,6 +17,7 @@ class ProductsController < ApplicationController
   # GET /products/1
   # GET /products/1.json
   def show
+    store_product_id(@product)
   end
 
   # GET /products/new
@@ -22,17 +25,15 @@ class ProductsController < ApplicationController
     @product = Product.new
   end
 
-  # GET /products/1/edit
-  def edit
-  end
-
   # POST /products
   # POST /products.json
   def create
     @product = Product.new(product_params)
+    repository = Repository.find_by(full_name: product_params[:repository_name])
+    build_repository_tree(repository)
 
     respond_to do |format|
-      if @product.save
+      if @product.save && repository.save
         format.html { redirect_to @product, notice: 'Product was successfully created.' }
         format.json { render :show, status: :created, location: @product }
       else
@@ -42,11 +43,14 @@ class ProductsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /products/1
-  # PATCH/PUT /products/1.json
+  # PATCH/PUT /organizations/1
+  # PATCH/PUT /organizations/1.json
   def update
+    @product.repository.milestones.destroy_all
+    @product.repository.projects.destroy_all
+    build_repository_tree(@product.repository)
     respond_to do |format|
-      if @product.update(product_params)
+      if @product.repository.save
         format.html { redirect_to @product, notice: 'Product was successfully updated.' }
         format.json { render :show, status: :ok, location: @product }
       else
@@ -59,6 +63,8 @@ class ProductsController < ApplicationController
   # DELETE /products/1
   # DELETE /products/1.json
   def destroy
+    @product.repository.milestones.destroy_all
+    @product.repository.projects.destroy_all
     @product.destroy
     respond_to do |format|
       format.html { redirect_to products_url, notice: 'Product was successfully destroyed.' }
@@ -76,5 +82,17 @@ class ProductsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def product_params
     params.require(:product).permit(:repository_name, :name).merge(organization_id: @current_organization.id)
+  end
+
+  #
+  # @param [Repository] repository
+  #
+  def build_repository_tree(repository)
+    milestones(@current_organization.github_api_token, repository, options: { state: :open }).each do |milestone|
+      issues(@current_organization.github_api_token, milestone)
+    end
+    projects(@current_organization.github_api_token, repository)
+    repository.projects.each { |p| project_columns(@current_organization.github_api_token, p) }
+    repository.projects.each { |p| p.project_columns.each { |pc| project_cards(@current_organization.github_api_token, pc) } }
   end
 end
