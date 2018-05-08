@@ -3,6 +3,7 @@ class Organization < ApplicationRecord
   has_many :users, through: :organization_users
   has_many :organization_repositories, dependent: :delete_all
   has_many :repositories, through: :organization_repositories
+  has_many :products, dependent: :delete_all
 
   attribute :github_api_token
 
