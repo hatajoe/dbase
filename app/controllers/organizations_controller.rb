@@ -13,9 +13,7 @@ class OrganizationsController < ApplicationController
   # GET /organizations
   # GET /organizations.json
   def index
-    organization_users = OrganizationUser.includes(:organization).find_by_user(@current_user)
-    redirect_to new_organization_path if organization_users.blank?
-    @organizations = organization_users.map(&:organization)
+    @organizations = OrganizationUser.includes(:organization).find_by_user(@current_user).map(&:organization)
   end
 
   # GET /organizations/1
