@@ -31,6 +31,7 @@ class ProductsController < ApplicationController
     @product = Product.new(product_params)
     repository = Repository.find_by(full_name: product_params[:repository_name])
     build_repository_tree(repository)
+    create_hook(@current_organization.github_api_token, repository, Rails.application.secrets.github_webhook_encryption_key)
 
     respond_to do |format|
       if @product.save && repository.save
@@ -66,6 +67,8 @@ class ProductsController < ApplicationController
     @product.repository.milestones.destroy_all
     @product.repository.projects.destroy_all
     @product.destroy
+    delete_hook(@current_organization.github_api_token, @product.repository)
+
     respond_to do |format|
       format.html { redirect_to products_url, notice: 'Product was successfully destroyed.' }
       format.json { head :no_content }

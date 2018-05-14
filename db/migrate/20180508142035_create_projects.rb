@@ -4,6 +4,7 @@ class CreateProjects < ActiveRecord::Migration[5.1]
       t.references :repository, foreign_key: true
       t.integer :number
       t.string :url
+      t.string :state
       t.string :name
       t.text :body
 

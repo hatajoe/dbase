@@ -6,6 +6,7 @@ class CreateMilestones < ActiveRecord::Migration[5.1]
       t.string :title
       t.text :description
       t.string :url
+      t.string :state
       t.integer :open_issues
       t.integer :closed_issues
       t.datetime :due_on
