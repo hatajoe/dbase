@@ -5,6 +5,8 @@
       <w>octokit</w>
       <w>omniauth</w>
       <w>sessionable</w>
+      <w>webhook</w>
+      <w>webhooks</w>
     </words>
   </dictionary>
 </component>

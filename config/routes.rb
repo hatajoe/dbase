@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :organizations
   resources :products, only: %i(index show new create update destroy)
   resources :repositories, only: %i(index)
-  resources :webhook, only: %i(update)
+  resources :webhooks, only: %i(create)
 
   namespace :session do
     resources :users, only: %i(index new destroy)

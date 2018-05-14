@@ -88,7 +88,7 @@ module GithubAccessible
   def create_hook(access_token, repository, secret)
     Octokit::Client.new(opt(access_token)).
       create_hook(repository.full_name, 'web', {
-        url: "#{request.base_url}/webhook",
+        url: webhooks_url,
         content_type: 'json',
         secret: secret,
       }, {
@@ -126,7 +126,7 @@ module GithubAccessible
   # @param [String] payload_body
   # @return [ApplicationRecord or NilClass]
   #
-  def parse_webhook(event, payload_body)
+  def parse_webhook_payload(event, payload_body)
     @@events[event.to_sym].try(:call, Octokit::Client.new.parse_payload(payload_body))
   end
 

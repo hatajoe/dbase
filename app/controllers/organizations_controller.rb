@@ -33,11 +33,9 @@ class OrganizationsController < ApplicationController
   def create
     repositories = repos(organization_params[:github_api_token])
     Repository.import_repositories(repositories)
-    # @organization = current_user.organizations.build(organization_params).tap do |o|
-    #   o.try(:build_organization_repositories, repositories)
-    # end
-    @organization = current_user.organizations.build(organization_params)
-    @organization.build_organization_repositories(repositories)
+    @organization = current_user.organizations.build(organization_params).tap do |o|
+      o.try(:build_organization_repositories, repositories)
+    end
     respond_to do |format|
       if current_user.save
         format.html { redirect_to @organization, notice: 'Organization was successfully created.' }
