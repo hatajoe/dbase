@@ -1,15 +1,21 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  repository: one
+projectone:
+  id: 1001
+  repository_name: repoone
   number: 1
-  url: MyString
-  name: MyString
-  body: MyString
+  html_url: https://github.com/hatajoe/dbase/projects/1001
+  owner_url: https://github.com/hatajoe/dbase
+  state: opened
+  name: opened project
+  body: this is the test2
 
-two:
-  repository: two
-  number: 1
-  url: MyString
-  name: MyString
-  body: MyString
+projecttwo:
+  id: 1002
+  repository_name: repotwo
+  number: 2
+  state: closed
+  html_url: https://github.com/hatajoe/dbase/projects/1002
+  owner_url: https://github.com/hatajoe/dbase
+  name: closed project
+  body: this is the test2

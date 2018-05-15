@@ -11,7 +11,7 @@ class ProductsController < ApplicationController
   # GET /products
   # GET /products.json
   def index
-    @products = Product.all_by_organization(@current_organization)
+    @products = Product.find_by_organization(@current_organization)
   end
 
   # GET /products/1

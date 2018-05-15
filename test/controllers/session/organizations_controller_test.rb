@@ -2,7 +2,7 @@ require 'test_helper'
 
 class Session::OrganizationsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @organization = organizations(:one)
+    @organization = organizations(:orgone)
   end
 
   test 'should create session_organization' do

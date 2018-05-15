@@ -1,17 +1,19 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  milestone: one
+issueone:
+  id: 1001
+  milestone: milestoneone
   number: 1
-  url: MyString
-  state: MyString
-  title: MyString
-  body: MyString
+  html_url: https://github.com/hatajoe/dbase/issues/1001
+  state: opened
+  title: opened issue
+  body: this is the test1
 
-two:
-  milestone: two
-  number: 1
-  url: MyString
-  state: MyString
-  title: MyString
-  body: MyString
+issuetwo:
+  id: 1002
+  milestone: milestoneone
+  number: 2
+  html_url: https://github.com/hatajoe/dbase/pulls/1002
+  state: closed
+  title: closed issue
+  body: this is the test2

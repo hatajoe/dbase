@@ -1,4 +1,4 @@
-class User < ApplicationRecord
+  class User < ApplicationRecord
   has_many :organization_users, dependent: :delete_all
   has_many :organizations, through: :organization_users
   has_many :repositories, through: :organizations

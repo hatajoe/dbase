@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(version: 20180508142539) do
   create_table "issues", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "milestone_id"
     t.integer "number"
-    t.string "url"
+    t.string "html_url"
     t.string "state"
     t.string "title"
     t.text "body"
@@ -25,17 +25,17 @@ ActiveRecord::Schema.define(version: 20180508142539) do
   end
 
   create_table "milestones", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "repository_id"
+    t.string "repository_name"
     t.integer "number"
     t.string "title"
     t.text "description"
-    t.string "url"
+    t.string "html_url"
+    t.string "state"
     t.integer "open_issues"
     t.integer "closed_issues"
     t.datetime "due_on"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["repository_id"], name: "index_milestones_on_repository_id"
   end
 
   create_table "organization_repositories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(version: 20180508142539) do
     t.bigint "project_column_id"
     t.bigint "issue_id"
     t.text "note"
+    t.string "column_url"
     t.string "content_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -91,25 +92,28 @@ ActiveRecord::Schema.define(version: 20180508142539) do
   create_table "project_columns", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "project_id"
     t.string "name"
+    t.string "project_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_project_columns_on_project_id"
   end
 
   create_table "projects", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "repository_id"
+    t.string "repository_name"
     t.integer "number"
-    t.string "url"
+    t.string "owner_url"
+    t.string "html_url"
+    t.string "state"
     t.string "name"
     t.text "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["repository_id"], name: "index_projects_on_repository_id"
   end
 
   create_table "repositories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "full_name"
-    t.string "url"
+    t.string "html_url"
+    t.string "state"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -128,8 +132,6 @@ ActiveRecord::Schema.define(version: 20180508142539) do
     t.index ["uid"], name: "index_users_on_uid", unique: true
   end
 
-  add_foreign_key "issues", "milestones"
-  add_foreign_key "milestones", "repositories"
   add_foreign_key "organization_repositories", "organizations"
   add_foreign_key "organization_repositories", "repositories"
   add_foreign_key "organization_users", "organizations"
@@ -137,5 +139,4 @@ ActiveRecord::Schema.define(version: 20180508142539) do
   add_foreign_key "products", "organizations"
   add_foreign_key "project_cards", "project_columns"
   add_foreign_key "project_columns", "projects"
-  add_foreign_key "projects", "repositories"
 end

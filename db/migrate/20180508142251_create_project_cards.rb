@@ -4,6 +4,7 @@ class CreateProjectCards < ActiveRecord::Migration[5.1]
       t.references :project_column, foreign_key: true
       t.references :issue
       t.text :note
+      t.string :column_url
       t.string :content_url
 
       t.timestamps

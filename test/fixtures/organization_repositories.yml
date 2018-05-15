@@ -1,9 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  organization: one
-  repository: one
+orgrepoone:
+  organization: orgone
+  repository: repoone
 
-two:
-  organization: two
-  repository: two
+orgrepotwo:
+  organization: orgtwo
+  repository: repotwo

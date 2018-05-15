@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  id: 1
-  full_name: clash/london-calling
-  url: https://github.com/clash/london-calling
+repoone:
+  id: 1001
+  full_name: octocat/Hello-World
+  html_url: https://github.com/clash/london-calling
 
-two:
-  id: 2
+repotwo:
+  id: 1002
   full_name: rancid/life-wont-wait
-  url: https://github.com/rancid/life-wont-wait
+  html_url: https://github.com/rancid/life-wont-wait

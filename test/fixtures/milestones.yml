@@ -1,21 +1,25 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  repository: one
+milestoneone:
+  id: 1001
+  repository_name: repoone
   number: 1
-  title: MyString
-  description: MyString
-  url: MyString
+  title: opened milestone
+  description: this is the test1
+  html_url: https://github.com/hatajoe/dbase/milestones/1001
+  state: opened
   open_issues: 1
   closed_issues: 1
   due_on: 2018-05-08 23:15:09
 
-two:
-  repository: two
-  number: 1
-  title: MyString
-  description: MyString
-  url: MyString
+milestonetwo:
+  id: 1002
+  repository_name: repotwo
+  number: 2
+  title: closed milestone
+  description: this is the test2
+  html_url: https://github.com/hatajoe/dbase/milestones/1002
+  state: closed
   open_issues: 1
   closed_issues: 1
   due_on: 2018-05-08 23:15:09

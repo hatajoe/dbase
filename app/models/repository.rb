@@ -1,4 +1,6 @@
-class Repository < GithubResource
+class Repository < ApplicationRecord
+  include GithubResourceable
+
   has_many :organization_repositories, dependent: :delete_all
   has_many :organizations, through: :organization_repositories
   has_many :milestones, dependent: :delete_all
@@ -13,28 +15,15 @@ class Repository < GithubResource
 
   #
   # @param [Sawyer::Resource] payload
-  # @return [Proc]
-  #
-  def self.from_payload(payload)
-    -> {
-      find_or_initialize_by_resource(
-        payload,
-        state: payload.state,
-      ).save
-    }
-  end
-
-  #
-  # @param [Sawyer::Resource] response
   # @return [Repository]
   #
-  def self.from_response(response)
+  def self.from_payload(payload)
     find_or_initialize_by_resource(
-      response,
-      id: response.id,
-      full_name: response.full_name,
-      url: response.html_url,
-      state: response.state
+      payload,
+      id: payload.id,
+      full_name: payload.full_name,
+      html_url: payload.html_url,
+      state: payload.state
     )
   end
 end

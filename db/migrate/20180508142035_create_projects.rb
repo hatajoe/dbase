@@ -1,9 +1,10 @@
 class CreateProjects < ActiveRecord::Migration[5.1]
   def change
     create_table :projects do |t|
-      t.references :repository, foreign_key: true
+      t.string :repository_name
       t.integer :number
-      t.string :url
+      t.string :owner_url
+      t.string :html_url
       t.string :state
       t.string :name
       t.text :body

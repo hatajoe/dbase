@@ -1,6 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+userone:
   provider: google_oauth2
   uid: 100000000000000000000
   first_name: Joe
@@ -8,7 +8,7 @@ one:
   email: joe@strummer.com
   picture: 
 
-two:
+usertwo:
   provider: google_oauth2
   uid: 200000000000000000000
   first_name: Tim

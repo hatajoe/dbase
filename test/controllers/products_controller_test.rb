@@ -2,7 +2,7 @@ require 'test_helper'
 
 class ProductsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @product = products(:one)
+    @product = products(:productone)
   end
 
   test "should get index" do
@@ -25,11 +25,6 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
 
   test "should show product" do
     get product_url(@product)
-    assert_response :redirect
-  end
-
-  test "should get edit" do
-    get edit_product_url(@product)
     assert_response :redirect
   end
 

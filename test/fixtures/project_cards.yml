@@ -1,11 +1,17 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  project_column: one
-  note: MyString
-  content_url: MyString
+cardone:
+  id: 1001
+  project_column_id: columnone
+  issue_id: issueone
+  note: card1
+  content_url: https://github.com/hatajoe/dbase/issues/1001
+  column_url: https://github.com/hatajoe/dbase/columns/1001
 
-two:
-  project_column: two
-  note: MyString
-  content_url: MyString
+cardtwo:
+  id: 1002
+  project_column_id: columntwo
+  issue_id: issuetwo
+  note: card2
+  content_url: https://github.com/hatajoe/dbase/pulls/1002
+  column_url: https://github.com/hatajoe/dbase/columns/1001

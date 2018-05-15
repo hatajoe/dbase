@@ -1,5 +1,7 @@
-class Project < GithubResource
-  belongs_to :repository
+class Project < ApplicationRecord
+  include GithubResourceable
+
+  has_one :repository, primary_key: :repository_name, foreign_key: :full_name
   has_many :project_columns, dependent: :destroy
 
   #
@@ -7,36 +9,16 @@ class Project < GithubResource
   # @return [Project]
   #
   def self.from_payload(payload)
-    case payload.action
-    when 'deleted' then
-      -> { find_or_initialize_by(id: payload.id).try(:delete_all) }
-    else
-      -> {
-        find_or_initialize_by_resource(
-          payload,
-          state: payload.state,
-          name: payload.name,
-          body: payload.body
-        ).save
-      }
-    end
-  end
-
-  #
-  # @param [Sawyer::Resource] response
-  # @param [Repository] repository
-  # @return [Project]
-  #
-  def self.from_response(response, repository)
     find_or_initialize_by_resource(
-      response,
-      id: response.id,
-      repository_id: repository.id,
-      number: response.number,
-      url: response.html_url,
-      state: response.state,
-      name: response.name,
-      body: response.body,
+      payload,
+      id: payload.id,
+      repository_name: resource_reponame(payload.owner_url),
+      number: payload.number,
+      owner_url: payload.owner_url,
+      html_url: payload.html_url,
+      state: payload.state,
+      name: payload.name,
+      body: payload.body,
     )
   end
 end

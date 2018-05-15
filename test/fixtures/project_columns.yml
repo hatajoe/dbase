@@ -1,9 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  project: one
-  name: MyString
+columnone:
+  id: 1001
+  project: projectone
+  name: column1
+  project_url: https://github.com/hatajoe/dbase/projects/1001
 
-two:
-  project: two
-  name: MyString
+columntwo:
+  id: 1002
+  project: projecttwo
+  name: column2
+  project_url: https://github.com/hatajoe/dbase/projects/1002

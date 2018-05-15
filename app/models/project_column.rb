@@ -1,4 +1,6 @@
-class ProjectColumn < GithubResource
+class ProjectColumn < ApplicationRecord
+  include GithubResourceable
+
   belongs_to :project
   has_many :project_cards, dependent: :destroy
 
@@ -7,30 +9,12 @@ class ProjectColumn < GithubResource
   # @return [ProjectColumn]
   #
   def self.from_payload(payload)
-    case payload.action
-    when 'deleted' then
-      -> { find_or_initialize_by(id: payload.id).try(:destroy_all) }
-    else
-      -> {
-        find_or_initialize_by_resource(
-          payload,
-          name: payload.name
-        ).save
-      }
-    end
-  end
-
-  #
-  # @param [Sawyer::Resource] response
-  # @param [Project] project
-  # @return [ProjectColumn]
-  #
-  def self.from_response(response, project)
     find_or_initialize_by_resource(
-      response,
-      id: response.id,
-      project_id: project.id,
-      name: response.name
+      payload,
+      id: payload.id,
+      project_id: resource_id(payload.project_url),
+      project_url: payload.project_url,
+      name: payload.name
     )
   end
 end

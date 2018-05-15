@@ -2,7 +2,7 @@ require 'test_helper'
 
 class RepositoriesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @repository = repositories(:one)
+    @repository = repositories(:repoone)
   end
 
   test "should get index" do

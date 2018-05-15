@@ -3,13 +3,13 @@
 #
 module GithubAccessible
   @@events = {
-    issues: -> (payload) { Issue.from_payload(payload) },
-    milestone: -> (payload) { Milestone.from_payload(payload) },
-    project_card: -> (payload) { ProjectCard.from_payload(payload) },
-    project_column: -> (payload) { ProjectColumn.from_payload(payload) },
-    project: -> (payload) { Project.from_payload(payload) },
-    pull_request: -> (payload) { Issue.from_payload(payload) },
-    repository: -> (payload) { Repository.from_payload(payload) },
+    issues: -> (payload) { Issue.from_payload(payload.issue) },
+    milestone: -> (payload) { Milestone.from_payload(payload.milestone) },
+    project_card: -> (payload) { ProjectCard.from_payload(payload.project_card) },
+    project_column: -> (payload) { ProjectColumn.from_payload(payload.project_column) },
+    project: -> (payload) { Project.from_payload(payload.project) },
+    pull_request: -> (payload) { Issue.from_payload(payload.pull_request) },
+    repository: -> (payload) { Repository.from_payload(payload.repository) },
   }.freeze
 
   #
@@ -19,7 +19,7 @@ module GithubAccessible
   def repos(access_token)
     @repos ||= Octokit::Client.new(opt(access_token)).
       repos.
-      map { |response| Repository.new.from_response(response) }
+      map { |payload| Repository.new.from_payload(payload) }
   end
 
   #
@@ -31,7 +31,7 @@ module GithubAccessible
   def milestones(access_token, repository, options: {})
     Octokit::Client.new(opt(access_token)).
       milestones(repository.full_name, options).
-      map { |response| repository.milestones.from_response(response, repository) }
+      map { |payload| repository.milestones.from_payload(payload) }
   end
 
   #
@@ -43,7 +43,7 @@ module GithubAccessible
   def projects(access_token, repository, options: {})
     Octokit::Client.new(opt(access_token)).
       projects(repository.full_name, options).
-      map { |response| repository.projects.from_response(response, repository) }
+      map { |payload| repository.projects.from_payload(payload) }
   end
 
   #
@@ -54,7 +54,7 @@ module GithubAccessible
   def project_columns(access_token, project)
     Octokit::Client.new(opt(access_token)).
       project_columns(project.id).
-      map { |response| project.project_columns.from_response(response, project) }
+      map { |payload| project.project_columns.from_payload(payload) }
   end
 
   #
@@ -65,7 +65,7 @@ module GithubAccessible
   def project_cards(access_token, column)
     Octokit::Client.new(opt(access_token)).
       column_cards(column.id).
-      map { |response| column.project_cards.from_response(response, column) }
+      map { |payload| column.project_cards.from_payload(payload) }
   end
 
   #
@@ -77,7 +77,7 @@ module GithubAccessible
   def issues(access_token, milestone, options: {})
     Octokit::Client.new(opt(access_token)).
       list_issues(milestone.repository.full_name, options.merge(milestone: milestone.number, state: :all)).
-      map { |response| milestone.issues.from_response(response, milestone) }
+      map { |payload| milestone.issues.from_payload(payload) }
   end
 
   #

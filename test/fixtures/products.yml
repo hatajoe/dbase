@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  organization: one
-  repository_name: one
-  name: MyString
+productone:
+  organization: orgone
+  repository_name: repoone
+  name: product1
 
-two:
-  organization: two
-  repository_name: two
-  name: MyString
+producttwo:
+  organization: orgtwo
+  repository_name: repotwo
+  name: product2
