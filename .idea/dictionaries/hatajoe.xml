@@ -4,6 +4,7 @@
       <w>authenticatable</w>
       <w>octokit</w>
       <w>omniauth</w>
+      <w>resourceable</w>
       <w>sessionable</w>
       <w>webhook</w>
       <w>webhooks</w>
