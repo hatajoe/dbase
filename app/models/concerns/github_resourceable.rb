@@ -35,7 +35,7 @@ module GithubResourceable
     # @return [String]
     #
     def milestone_reponame(url)
-      url.try(:split, '/')[-3..-2].join('/')
+      url.try(:split, '/')[-4..-3].join('/')
     end
   end
 

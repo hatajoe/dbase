@@ -19,7 +19,7 @@ module GithubAccessible
   def repos(access_token)
     @repos ||= Octokit::Client.new(opt(access_token)).
       repos.
-      map { |payload| Repository.new.from_payload(payload) }
+      map { |payload| Repository.from_payload(payload) }
   end
 
   #
@@ -123,11 +123,19 @@ module GithubAccessible
 
   #
   # @param [String] event
-  # @param [String] payload_body
+  # @param [[Sawyer::Resource]] payload
   # @return [ApplicationRecord or NilClass]
   #
-  def parse_webhook_payload(event, payload_body)
-    @@events[event.to_sym].try(:call, Octokit::Client.new.parse_payload(payload_body))
+  def resolve_webhook(event, payload)
+    @@events[event.to_sym].try(:call, payload)
+  end
+
+  #
+  # @param [String] payload_body
+  # @return [Sawyer::Resource]
+  #
+  def parse_payload(payload_body)
+    Octokit::Client.new.parse_payload(payload_body)
   end
 
   private
