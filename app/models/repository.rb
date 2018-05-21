@@ -5,6 +5,7 @@ class Repository < ApplicationRecord
   has_many :organizations, through: :organization_repositories
   has_many :milestones, primary_key: :full_name, foreign_key: :repository_name, dependent: :delete_all
   has_many :projects, primary_key: :full_name, foreign_key: :repository_name, dependent: :delete_all
+  has_many :issues, primary_key: :full_name, foreign_key: :repository_name, dependent: :delete_all
 
   #
   # @param [Array<Repository>] repos

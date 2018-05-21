@@ -13,15 +13,16 @@
 ActiveRecord::Schema.define(version: 20180508142539) do
 
   create_table "issues", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "milestone_id"
+    t.string "repository_name"
+    t.integer "milestone_id"
     t.integer "number"
+    t.string "repository_url"
     t.string "html_url"
     t.string "state"
     t.string "title"
     t.text "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["milestone_id"], name: "index_issues_on_milestone_id"
   end
 
   create_table "milestones", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

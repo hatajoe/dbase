@@ -47,6 +47,7 @@ class ProductsController < ApplicationController
   # PATCH/PUT /organizations/1
   # PATCH/PUT /organizations/1.json
   def update
+    @product.repository.issues.destroy_all
     @product.repository.milestones.destroy_all
     @product.repository.projects.destroy_all
     build_repository_tree(@product.repository)
@@ -64,6 +65,7 @@ class ProductsController < ApplicationController
   # DELETE /products/1
   # DELETE /products/1.json
   def destroy
+    @product.repository.issues.destroy_all
     @product.repository.milestones.destroy_all
     @product.repository.projects.destroy_all
     @product.destroy
@@ -91,8 +93,9 @@ class ProductsController < ApplicationController
   # @param [Repository] repository
   #
   def build_repository_tree(repository)
+    issues_by_repo(@current_organization.github_api_token, repository)
     milestones(@current_organization.github_api_token, repository, options: { state: :open }).each do |milestone|
-      issues(@current_organization.github_api_token, milestone)
+      issues_by_milestone(@current_organization.github_api_token, milestone)
     end
     projects(@current_organization.github_api_token, repository)
     repository.projects.each { |p| project_columns(@current_organization.github_api_token, p) }

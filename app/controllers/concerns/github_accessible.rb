@@ -70,13 +70,26 @@ module GithubAccessible
 
   #
   # @param [String] access_token
+  # @param [Repository] repository
+  # @param [Hash] options
+  # @return [Array<ProjectCard>]
+  #
+  def issues_by_repo(access_token, repository, options: {})
+    Octokit::Client.new(opt(access_token)).
+      list_issues(repository.full_name, options).
+      select { |payload| !payload.milestone.try(:id) }.
+      map { |payload| repository.issues.from_payload(payload) }
+  end
+
+  #
+  # @param [String] access_token
   # @param [Milestone] milestone
   # @param [Hash] options
   # @return [Array<ProjectCard>]
   #
-  def issues(access_token, milestone, options: {})
+  def issues_by_milestone(access_token, milestone, options: {})
     Octokit::Client.new(opt(access_token)).
-      list_issues(milestone.repository.full_name, options.merge(milestone: milestone.number, state: :all)).
+      list_issues(milestone.repository_name, options.merge(milestone: milestone.number, state: :all)).
       map { |payload| milestone.issues.from_payload(payload) }
   end
 
@@ -123,17 +136,14 @@ module GithubAccessible
 
   #
   # @param [String] event
-  # @param [[Sawyer::Resource]] payload
+  # @param [String] payload_body
   # @return [ApplicationRecord or NilClass]
   #
-  def resolve_webhook(event, payload)
-    @@events[event.to_sym].try(:call, payload)
+  def parse_webhook_payload(event, payload_body)
+    @@events[event.to_sym].try(:call, )
   end
 
-  #
-  # @param [String] payload_body
-  # @return [Sawyer::Resource]
-  #
+
   def parse_payload(payload_body)
     Octokit::Client.new.parse_payload(payload_body)
   end
