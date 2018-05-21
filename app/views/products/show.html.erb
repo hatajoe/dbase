@@ -19,11 +19,6 @@
   <strong>Milestones:</strong><br>
   <% @product.repository.milestones.each do |milestone| %>
     <%= milestone.title %>
-    <ul>
-      <% milestone.issues.each do |issue| %>
-        <li><%= issue.title %></li>
-      <% end %>
-    </ul>
   <% end %>
 </div>
 
@@ -31,20 +26,20 @@
   <strong>Projects:</strong><br>
   <% @product.repository.projects.each do |project| %>
     <%= project.name %>
-    <ul>
+    <div class="row">
       <% project.project_columns.each do |columns| %>
-        <li>
-          <ul>
-            <%= columns.name %>
-            <% columns.project_cards.each do |card| %>
-              <% if card.note.present? %>
-                <li><%= card.note %></li>
-              <% end %>
+        <div class="col s2">
+          <%= columns.name %>
+          <% columns.project_cards.each do |card| %>
+            <% if card.note.present? %>
+              <div class="card-panel">
+                <span class="silver-text"><%= card.note %></span>
+              </div>
             <% end %>
-          </ul>
-        </li>
+          <% end %>
+        </div>
       <% end %>
-    </ul>
+    </div>
   <% end %>
 </div>
 
