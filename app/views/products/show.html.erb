@@ -3,40 +3,41 @@
 <p>
   <strong>Organization:</strong>
   <%= @product.organization.name %>
-</p>
-
-<p>
   <strong>Repository:</strong>
   <%= @product.repository.full_name %>
-</p>
-
-<p>
   <strong>Name:</strong>
   <%= @product.name %>
 </p>
 
-<div>
-  <strong>Milestones:</strong><br>
-  <% @product.repository.milestones.each do |milestone| %>
-    <%= milestone.title %>
-  <% end %>
-</div>
+<div class="container">
 
-<div>
-  <strong>Projects:</strong><br>
+  <div class="row">
+    <div class="jumbotron">
+      <strong>Milestones:</strong><br>
+      <% @product.repository.milestones.each do |milestone| %>
+        <%= milestone.title %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<div class="container products-inline-group-x h-100">
   <% @product.repository.projects.each do |project| %>
     <%= project.name %>
-    <div class="row">
+    <div class="row flex-nowrap h-100">
       <% project.project_columns.each do |columns| %>
-        <div class="col s2">
-          <%= columns.name %>
-          <% columns.project_cards.each do |card| %>
-            <% if card.note.present? %>
-              <div class="card-panel">
-                <span class="silver-text"><%= card.note %></span>
-              </div>
-            <% end %>
-          <% end %>
+        <div class="col-sm-4">
+          <div class="container products-inline-group-y" style="height: 90%;">
+            <%= columns.name %>
+            <div class="flex-nowrap">
+              <% columns.project_cards.each do |card| %>
+                <% if card.note.present? %>
+                  <div class="card">
+                    <span class="card-body"><%= card.note %></span>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
         </div>
       <% end %>
     </div>

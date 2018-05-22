@@ -1,5 +1,18 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Session Users</h1>
-
-<%= link_to 'New Session User', new_session_user_path %>
+<div class="container h-100">
+  <div class="row align-items-center h-100">
+    <div class="col">
+      <div class="card mx-auto" style="width: 20rem;">
+        <div class="card-header">
+          DBase
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Sign in</h5>
+          <p class="card-text">Please sign in with Google account.</p>
+          <%= link_to new_session_user_path do %>
+            <%= image_tag 'btn_google_signin_light_normal_web@2x', width: 191 %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
