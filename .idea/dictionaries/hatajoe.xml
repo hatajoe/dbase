@@ -6,6 +6,7 @@
       <w>omniauth</w>
       <w>resourceable</w>
       <w>sessionable</w>
+      <w>turbolinks</w>
       <w>webhook</w>
       <w>webhooks</w>
     </words>
