@@ -22,4 +22,12 @@ class Milestone < ApplicationRecord
       due_on: payload.due_on
     )
   end
+
+  #
+  # @return [Integer]
+  #
+  def progress
+    return 0 if closed_issues == 0
+    ((closed_issues / open_issues) * 100).to_i
+  end
 end
