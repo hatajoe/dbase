@@ -1,6 +1,6 @@
 <p id="notice"><%= notice %></p>
 <div class="container h-100">
-  <div style="height: 50% !important;">
+  <div class="h-50">
     <p>
       <strong>Organization:</strong>
       <%= @product.organization.name %>
@@ -17,7 +17,7 @@
       </div>
     </div>
   </div>
-  <div style="height: 50% !important;">
+  <div class="h-50">
     <div class="products-inline-group-x h-100">
       <% @product.repository.projects.each do |project| %>
         <div class="row flex-nowrap h-100">
