@@ -27,7 +27,8 @@ class Milestone < ApplicationRecord
   # @return [Integer]
   #
   def progress
-    return 0 if closed_issues == 0
-    ((closed_issues / open_issues) * 100).to_i
+    len = issues.length
+    return 0 if len == 0
+    ((closed_issues.to_f / len.to_f) * 100).to_i
   end
 end

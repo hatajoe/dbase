@@ -26,4 +26,12 @@ class ProjectCard < ApplicationRecord
   def note
     (issue.try(:title) || read_attribute(:note)).to_s
   end
+
+  #
+  # @param [Integer] milestone_id
+  # @return [TrueClass or FalseClass]
+  #
+  def belongs_to?(milestone_id)
+    issue.blank? || issue.try(:milestone).try(:id) == milestone_id
+  end
 end

@@ -1,16 +1,18 @@
 <p id="notice"><%= notice %></p>
+<nav class="navbar navbar-light bg-light">
+      <span class="navbar-text">
+        <strong>Organization:</strong>
+        <%= @product.organization.name %>
+        <strong>Repository:</strong>
+        <%= @product.repository.full_name %>
+        <strong>Name:</strong>
+        <%= @product.name %>
+        <%= link_to 'Update', product_path(@product), method: :put %> |
+        <%= link_to 'Back', products_path %>
+      </span>
+</nav>
 <div class="container h-100">
   <div class="h-50">
-    <p>
-      <strong>Organization:</strong>
-      <%= @product.organization.name %>
-      <strong>Repository:</strong>
-      <%= @product.repository.full_name %>
-      <strong>Name:</strong>
-      <%= @product.name %>
-      <%= link_to 'Update', product_path(@product), method: :put %> |
-      <%= link_to 'Back', products_path %>
-    </p>
     <div class="products-inline-group-x">
       <div class="row">
         <div id="gantt"></div>
@@ -21,27 +23,20 @@
     <div class="products-inline-group-x h-100">
       <% @product.repository.projects.each do |project| %>
         <div class="row flex-nowrap h-100">
-          <% project.project_columns.each do |column| %>
+          <% project.sorted_project_columns.each do |column| %>
             <div class="col-sm-4">
               <div class="sticky-top">
                 <%= column.name %>
               </div>
               <div class="container products-inline-group-y" style="height: 90% !important;">
                 <div class="flex-nowrap">
-                  <% column.project_cards.each do |card| %>
+                  <% column.project_cards.select { |card| card.belongs_to?(@milestone_id.to_i) }.each do |card| %>
                     <% if card.note.present? %>
                       <div class="card shadow-sm mb-2 bg-white rounded">
-                        <% if card.issue.present? %>
-                          <div class="card-header">
-                            <div class="row">
-                              <div class="col-sm-6 text-muted text-left">
-                                <% if card.issue.milestone.present? %>
-                                  <%= link_to card.issue.milestone.html_url, target: :blank do %>
-                                    <small><%= card.issue.milestone.title %></small>
-                                  <% end %>
-                                <% end %>
-                              </div>
-                              <div class="col-sm-6 text-right">
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-sm-2">
+                              <% if card.issue.present? %>
                                 <%= link_to card.issue.html_url, target: :blank do %>
                                   <% if card.issue.opened? %>
                                     <% if card.issue.issue? %>
@@ -53,12 +48,21 @@
                                     <%= octicon 'issue-closed', style: 'fill: red' %>
                                   <% end %>
                                 <% end %>
+                              <% else %>
+                                <%= octicon 'note' %>
+                              <% end %>
+                            </div>
+                            <div class="col-sm-10">
+                              <p><small><%= card.note %></small></p>
+                              <div class="text-right">
+                                <% if card.issue.try(:milestone).present? %>
+                                  <%= link_to card.issue.milestone.html_url, class: 'card-link', target: :blank do %>
+                                    <small><%= card.issue.milestone.title %></small>
+                                  <% end %>
+                                <% end %>
                               </div>
                             </div>
                           </div>
-                        <% end %>
-                        <div class="card-body">
-                          <p><small><%= card.note %></small></p>
                         </div>
                       </div>
                     <% end %>
@@ -87,5 +91,9 @@
         },
         <% end %>
     ];
-    new Gantt("#gantt", tasks);
+    new Gantt("#gantt", tasks, {
+        on_click: function (task) {
+            window.location.href = "<%= product_path(@product.id) %>?milestone_id=" + task.id;
+        }
+    });
 </script>

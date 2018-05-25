@@ -21,4 +21,15 @@ class Project < ApplicationRecord
       body: payload.body,
     )
   end
+
+  #
+  # @return [Array<ProjectColumn>]
+  #
+  def sorted_project_columns
+    sorted = []
+    ['To Do', 'In progress', 'In review', 'Done', 'Backlog', 'Wontfix'].each do |name|
+      sorted.push(project_columns.find { |column| column.name == name })
+    end
+    sorted
+  end
 end

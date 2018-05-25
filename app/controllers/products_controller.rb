@@ -18,6 +18,7 @@ class ProductsController < ApplicationController
   # GET /products/1.json
   def show
     store_product_id(@product)
+    @milestone_id = params[:milestone_id] || nil
   end
 
   # GET /products/new
