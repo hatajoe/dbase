@@ -11,7 +11,7 @@ module Session
       organization = user.try(:organizations).try(:find) { |org| org.id == organization_params[:id].to_i }
       if user && organization
         store_organization_id(organization)
-        redirect_to root_path
+        redirect_to organization_path(id: organization.id)
       else
         redirect_to organizations_path
       end

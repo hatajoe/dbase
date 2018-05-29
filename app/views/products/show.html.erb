@@ -1,21 +1,9 @@
-<p id="notice"><%= notice %></p>
-<nav class="navbar navbar-light bg-light">
-      <span class="navbar-text">
-        <strong>Organization:</strong>
-        <%= @product.organization.name %>
-        <strong>Repository:</strong>
-        <%= @product.repository.full_name %>
-        <strong>Name:</strong>
-        <%= @product.name %>
-        <%= link_to 'Update', product_path(@product), method: :put %> |
-        <%= link_to 'Back', products_path %>
-      </span>
-</nav>
 <div class="container h-100">
   <div class="h-50">
+    <p id="notice"><%= notice %></p>
     <div class="products-inline-group-x">
       <div class="row">
-        <div id="gantt"></div>
+        <div id="chart_div"></div>
       </div>
     </div>
   </div>
@@ -57,7 +45,7 @@
                               <div class="text-right">
                                 <% if card.issue.try(:milestone).present? %>
                                   <%= link_to card.issue.milestone.html_url, class: 'card-link', target: :blank do %>
-                                    <small><%= card.issue.milestone.title %></small>
+                                    <small><%= card.issue.milestone.repository_name %> <%= card.issue.milestone.title %></small>
                                   <% end %>
                                 <% end %>
                               </div>
@@ -77,23 +65,47 @@
   </div>
 </div>
 
-<script>
-    const tasks = [
-        <% @product.repository.milestones.each do |milestone| %>
-        {
-            id: '<%= milestone.id %>',
-            name: '<%= milestone.title %>',
-            start: '<%= milestone.created_at.strftime('%Y-%m-%d') %>',
-            end: '<%= milestone.due_on.strftime('%Y-%m-%d') %>',
-            progress: <%= milestone.progress %>,
-            dependencies: '',
-            custom_class: '' // optional
-        },
-        <% end %>
-    ];
-    new Gantt("#gantt", tasks, {
-        on_click: function (task) {
-            window.location.href = "<%= product_path(@product.id) %>?milestone_id=" + task.id;
-        }
-    });
+<script type="text/javascript">
+  $(document).on('turbolinks:load', () => {
+      google.charts.load('current', { 'packages': ['gantt'] });
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+          const data = google.visualization.arrayToDataTable([
+              [
+                  { label: 'Task ID', type: 'string' },
+                  { label: 'Task Name', type: 'string' },
+                  { label: 'Start Date', type: 'date' },
+                  { label: 'End Date', type: 'date' },
+                  { label: 'Duration', type: 'number' },
+                  { label: 'Percent Complete', type: 'number' },
+                  { label: 'Dependencies', type: 'string' },
+              ],
+              <% @product.repository.milestones.each do |milestone| %>
+              [
+                  '<%= milestone.id %>',
+                  '<%=milestone.repository_name %> <%= milestone.title %>',
+                  new Date('<%= milestone.created_at.strftime('%Y-%m-%d') %>'),
+                  new Date('<%= milestone.due_on.strftime('%Y-%m-%d') %>'),
+                  null,
+                  <%= milestone.progress %>,
+                  null,
+              ],
+              <% end %>
+          ]);
+
+          const chart = new google.visualization.Gantt(document.getElementById('chart_div'));
+          google.visualization.events.addListener(chart, 'select', () => {
+              const selection = chart.getSelection();
+              selection.some((item) => {
+                  window.location.href = `<%= product_path %>?milestone_id=${data.getFormattedValue(item.row, 0)}`;
+                  return true;
+              });
+          });
+          chart.draw(data, {
+              width: window.innerWidth,
+          });
+      }
+  });
 </script>

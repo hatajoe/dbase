@@ -7,13 +7,14 @@ class OrganizationsController < ApplicationController
   include GithubAccessible
 
   before_action :user_authenticate
-  before_action :organization_authenticate, only: %i(edit update destroy)
+  before_action :organization_authenticate, only: %i(show edit update destroy)
   before_action :set_organization, only: %i(show edit update destroy)
 
   # GET /organizations
   # GET /organizations.json
   def index
     @organizations = OrganizationUser.includes(:organization).find_by_user(@current_user).map(&:organization)
+    redirect_to new_organization_path if @organizations.blank?
   end
 
   # GET /organizations/1
@@ -75,7 +76,8 @@ class OrganizationsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_organization
-    @organization = Organization.find(params[:id])
+    @organization = @current_organization || Organization.find_by(id: params[:id])
+    redirect_to organizations_path if @organization.blank?
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

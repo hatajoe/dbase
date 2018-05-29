@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root 'dashboard#index'
+  root 'organizations#show'
   resources :organizations
   resources :products, only: %i(index show new create update destroy)
   resources :repositories, only: %i(index)

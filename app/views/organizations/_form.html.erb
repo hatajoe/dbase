@@ -1,32 +1,26 @@
-<%= form_with(model: organization, local: true) do |form| %>
-  <% if organization.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(organization.errors.count, "error") %> prohibited this organization from being saved:</h2>
+<% if organization.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(organization.errors.count, "error") %> prohibited this organization from being saved:</h2>
 
-      <ul>
+    <ul>
       <% organization.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :uid %>
-    <%= form.text_field :uid, id: :organization_uid %>
+    </ul>
   </div>
-
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name, id: :organization_name %>
+<% end %>
+<%= form_with(model: organization, local: true) do |form| %>
+  <div class="form-group">
+    <%= form.label :uid do %>UID<% end %>
+    <%= form.text_field :uid, id: :organization_uid, class: 'form-control' %>
   </div>
-
-  <div class="field">
-    <%= form.label :github_api_token %>
-    <%= form.text_field :github_api_token, id: :organization_github_api_token %>
+  <div class="form-group">
+    <%= form.label :name do %>Name<% end %>
+    <%= form.text_field :name, id: :organization_name, class: 'form-control' %>
   </div>
-
-  <div class="actions">
-    <%= form.submit %>
+  <div class="form-group">
+    <%= form.label :github_api_token do %>GitHub API Token<% end %>
+    <%= form.text_field :github_api_token, id: :organization_github_api_token, class: 'form-control' %>
   </div>
+  <%= form.submit class: 'btn btn-primary' %>
 <% end %>

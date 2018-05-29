@@ -5,6 +5,7 @@ module Session
   class UsersController < ApplicationController
     include UserSessionable
     include UserAuthenticatable
+    include OrganizationAuthenticatable
 
     before_action :user_authenticate, only: %i(destroy)
 
@@ -22,6 +23,7 @@ module Session
 
     def destroy
       delete_user_id
+      delete_organization_id
       redirect_to root_path
     end
   end
