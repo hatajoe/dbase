@@ -5,6 +5,7 @@
   </component>
   <component name="ProjectPlainTextFileTypeManager">
     <file url="file://$PROJECT_DIR$/app/assets/stylesheets/application.css" />
+    <file url="file://$PROJECT_DIR$/app/helpers/dashboard_helper.rb" />
   </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="rbenv: 2.4.0" project-jdk-type="RUBY_SDK" />
 </project>
