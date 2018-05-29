@@ -12,6 +12,7 @@ class ProductsController < ApplicationController
   # GET /products.json
   def index
     @products = Product.find_by_organization(@current_organization)
+    redirect_to new_product_path if @products.blank?
   end
 
   # GET /products/1
