@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   root 'organizations#show'
   resources :organizations
+  resources :organization_users, only: %i(create)
   resources :products, only: %i(index show new create update destroy)
   resources :repositories, only: %i(index)
   resources :webhooks, only: %i(create)

@@ -19,4 +19,19 @@
       )
     end
   end
+
+  #
+  # @return [String]
+  #
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+
+  #
+  # @param [Organization]
+  # @return [TrueClass or FalseClass]
+  #
+  def belongs_to?(organization)
+    !!organizations.find { |belong| belong.uid == organization.uid }
+  end
 end

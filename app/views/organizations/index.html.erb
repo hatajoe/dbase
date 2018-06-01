@@ -5,9 +5,13 @@
       <div class="card-body">
         <h5 class="card-title"><%= organization.name %></h5>
         <h6 class="card-subtitle mb-2 text-muted"><%= organization.uid %></h6>
-        <%= link_to 'Show', session_organizations_path(organization: { id: organization.id }), method: :post, class: 'card-link' %>
-        <%= link_to 'Edit', edit_organization_path(organization), class: 'card-link' %>
-        <%= link_to 'Destroy', organization, method: :delete,  class: 'card-link', data: { confirm: 'Are you sure?' } %>
+        <% if @current_user.belongs_to?(organization) %>
+          <%= link_to 'Show', session_organizations_path(organization: { id: organization.id }), method: :post, class: 'card-link' %>
+          <%= link_to 'Edit', edit_organization_path(organization), class: 'card-link' %>
+          <%= link_to 'Destroy', organization, method: :delete,  class: 'card-link', data: { confirm: 'Are you sure?' } %>
+        <% else %>
+          <%= link_to 'Join', organization_users_path(organization_user: { organization_id: organization.id, user_id: @current_user.id }), method: :post, class: 'card-link' %>
+        <% end %>
       </div>
     </div>
   <% end %>

@@ -12,49 +12,50 @@
   <body>
   <% if @current_user.present? %>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#"><%= octicon 'octoface' %></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+      <ul class="navbar-nav my-2 my-lg-0">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <%= image_tag @current_user.picture, width: '30px', class: 'rounded mr-1', alt: 'icon' %>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <%= link_to 'Switch Organization', organizations_path, class: 'dropdown-item' %>
+            <%= link_to 'New Organization', new_organization_path, class: 'dropdown-item' %>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item small">
+              <%= @current_user.full_name %><br>
+              <%= @current_user.email %><br>
+            </div>
+            <%= link_to 'Sign out', session_user_path(@current_user.id), method: :delete, class: 'dropdown-item' %>
+          </div>
+        </li>
+      </ul>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <li class="nav-item">
-            <%= link_to 'Dashboard', root_path, class: 'nav-link' %>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Products
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <%= link_to 'Products', products_path, class: 'dropdown-item' %>
-              <div class="dropdown-divider"></div>
-              <%= link_to 'New Product', new_product_path, class: 'dropdown-item' %>
-            </div>
-          </li>
+          <% if @current_organization.present? %>
+            <li class="nav-item">
+              <%= link_to @current_organization.name, organization_path(@current_organization), class: 'nav-link' %>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Products
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <%= link_to 'Products', products_path, class: 'dropdown-item' %>
+                <div class="dropdown-divider"></div>
+                <%= link_to 'New Product', new_product_path, class: 'dropdown-item' %>
+              </div>
+            </li>
+          <% end %>
         </ul>
-        <ul class="navbar-nav my-2 my-lg-0">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Organizations
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <%= link_to 'Organizations', organizations_path, class: 'dropdown-item' %>
-              <div class="dropdown-divider"></div>
-              <%= link_to 'New Organization', new_organization_path, class: 'dropdown-item' %>
-            </div>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <%= @current_user.first_name %>
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <%= link_to 'Sign out', session_user_path(@current_user.id), method: :delete, class: 'dropdown-item' %>
-              <div class="dropdown-divider"></div>
-              <%= link_to 'Sign out', session_user_path(@current_user.id), method: :delete, class: 'dropdown-item' %>
-            </div>
-          </li>
-        </ul>
+        <%= form_tag organizations_path, method: :get, class: 'form-inline my-2 my-lg-0' do %>
+          <%= search_field_tag :search, nil, class: 'form-control mr-sm-2', placeholder: 'Search Organization', 'area-label': 'Search' %>
+          <%= button_tag 'Search', class: 'btn btn-outline-success my-2 my-sm-0' %>
+        <% end %>
       </div>
     </nav>
   <% end %>

@@ -13,7 +13,11 @@ class OrganizationsController < ApplicationController
   # GET /organizations
   # GET /organizations.json
   def index
-    @organizations = OrganizationUser.includes(:organization).find_by_user(@current_user).map(&:organization)
+    @organizations = if params[:search].present?
+                       Organization.where(uid: params[:search])
+                     else
+                       OrganizationUser.includes(:organization).find_by_user(@current_user).map(&:organization)
+                     end
     redirect_to new_organization_path if @organizations.blank?
   end
 
@@ -76,8 +80,10 @@ class OrganizationsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_organization
-    @organization = @current_organization || Organization.find_by(id: params[:id])
-    redirect_to organizations_path if @organization.blank?
+    @organization = Organization.find_by(id: params[:id])
+    if @organization.blank? || !@current_user.belongs_to?(@organization)
+      redirect_to organizations_path
+    end
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
