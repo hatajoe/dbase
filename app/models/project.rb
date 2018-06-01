@@ -27,7 +27,7 @@ class Project < ApplicationRecord
   #
   def sorted_project_columns
     sorted = []
-    ['To Do', 'In progress', 'In review', 'Done', 'Backlog', 'Wontfix'].each do |name|
+    ['To Do', 'In Progress', 'In Review', 'Done', 'Backlog', 'Wontfix'].each do |name|
       sorted.push(project_columns.find { |column| column.name == name })
     end
     sorted

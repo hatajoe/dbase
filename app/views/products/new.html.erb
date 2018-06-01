@@ -1,5 +1,45 @@
 <div class="container h-100 mt-5">
   <div class="jumbotron">
+    <h1 class="display-4">Preparing Product Creation</h1>
+    <p class="lead">Before creating product, you need to complete the following 3 steps. Read it carefully, and complete the work.</p>
+    <div class="row mb-5">
+      <div class="col-sm-4 mb-2">
+        <div class="card shadow-sm">
+          <%= image_tag 'product_creation_step1', class: 'card-img-top', alt: 'Product Creation Step1' %>
+          <div class="card-body">
+            <h5 class="card-title">Step 1</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Create GitHub Project</h6>
+            <p class="card-text small">
+              Create a project to the repository that you will add below.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4 mb-2">
+        <div class="card shadow-sm">
+          <%= image_tag 'product_creation_step2', class: 'card-img-top', alt: 'Product Creation Step2' %>
+          <div class="card-body">
+            <h5 class="card-title">Step 2</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Create 6 Project Columns</h6>
+            <p class="card-text small">
+              Create 'To Do', 'In Progress', 'In Review', 'Done', 'Backlog', 'Wontfix' columns.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4 mb-2">
+        <div class="card shadow-sm">
+          <%= image_tag 'product_creation_step3', class: 'card-img-top', alt: 'Product Creation Step3' %>
+          <div class="card-body">
+            <h5 class="card-title">Step 3</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Create Milestone</h6>
+            <p class="card-text small">
+              Create one or more milestones to the repository that you will add below.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
     <%= render 'form', product: @product %>
   </div>
 </div>
