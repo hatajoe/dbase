@@ -45,8 +45,11 @@
                 Products
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <%= link_to 'Products', products_path, class: 'dropdown-item' %>
+                <% @current_organization.products.each do |product| %>
+                  <%= link_to product.name, product_path(product), class: 'dropdown-item' %>
+                <% end %>
                 <div class="dropdown-divider"></div>
+                <%= link_to 'Products', products_path, class: 'dropdown-item' %>
                 <%= link_to 'New Product', new_product_path, class: 'dropdown-item' %>
               </div>
             </li>

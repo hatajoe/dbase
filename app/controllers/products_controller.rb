@@ -1,7 +1,6 @@
 class ProductsController < ApplicationController
   include UserAuthenticatable
   include OrganizationAuthenticatable
-  include ProductSessionable
   include GithubAccessible
 
   before_action :user_authenticate
@@ -18,7 +17,6 @@ class ProductsController < ApplicationController
   # GET /products/1
   # GET /products/1.json
   def show
-    store_product_id(@product)
     @milestone_id = params[:milestone_id] || nil
   end
 
