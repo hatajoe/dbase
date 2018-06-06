@@ -63,3 +63,5 @@ gem 'activerecord-import', '~> 0.15.0'
 gem 'bootstrap', '~> 4.1.1'
 gem 'jquery-rails'
 gem 'octicons_helper'
+
+ruby '2.5.0'
