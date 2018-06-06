@@ -2,6 +2,8 @@
 # OrganizationsController manipulates organization resources
 #
 class OrganizationsController < ApplicationController
+  http_basic_authenticate_with name: ENV['USER'], password: ENV['PASS'] if Rails.env.production?
+
   include UserAuthenticatable
   include OrganizationAuthenticatable
   include GithubAccessible

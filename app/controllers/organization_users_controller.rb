@@ -1,4 +1,6 @@
 class OrganizationUsersController < ApplicationController
+  http_basic_authenticate_with name: ENV['USER'], password: ENV['PASS'] if Rails.env.production?
+
   include UserAuthenticatable
 
   before_action :user_authenticate
