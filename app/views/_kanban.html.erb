@@ -9,7 +9,7 @@
   </div>
   <div class="h-50">
     <div class="products-inline-group-x h-100">
-      <h5><%= milestone.present? ? "#{milestone.repository_name} #{milestone.title}" : 'All milestones' %></h5>
+      <h5><%= milestone.present? ? "#{milestone.repository_name} #{milestone.title}" : 'All' %></h5>
       <div class="row flex-nowrap h-100">
         <% Project.titles.keys.each do |title| %>
           <div class="col-sm-4">
