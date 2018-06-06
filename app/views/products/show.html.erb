@@ -3,7 +3,7 @@
     <p id="notice"><%= notice %></p>
     <div class="products-inline-group-x">
       <div class="row">
-        <div id="chart_div"></div>
+        <div id="chart_div" data-json="<%= @product.repository.milestones.to_json %>"></div>
       </div>
     </div>
   </div>
@@ -18,7 +18,7 @@
               </div>
               <div class="container products-inline-group-y" style="height: 90% !important;">
                 <div class="flex-nowrap">
-                  <% column.project_cards.select { |card| card.belongs_to?(@milestone_id.to_i) }.each do |card| %>
+                  <% column.project_cards.select { |card| @milestone_id.blank? || card.belongs_to?(@milestone_id.to_i) }.each do |card| %>
                     <% if card.note.present? %>
                       <div class="card shadow-sm mb-2 bg-white rounded">
                         <div class="card-body">
@@ -70,9 +70,13 @@
       google.charts.load('current', { 'packages': ['gantt'] });
       google.charts.setOnLoadCallback(drawChart);
 
-      function drawChart() {
+      function getMilestones() {
+          return $("#chart_div").data("json");
+      }
 
-          const data = google.visualization.arrayToDataTable([
+      function drawChart() {
+          const milestones = getMilestones();
+          const header = [
               [
                   { label: 'Task ID', type: 'string' },
                   { label: 'Task Name', type: 'string' },
@@ -82,28 +86,29 @@
                   { label: 'Percent Complete', type: 'number' },
                   { label: 'Dependencies', type: 'string' },
               ],
-              <% @product.repository.milestones.each do |milestone| %>
-              [
-                  '<%= milestone.id %>',
-                  '<%=milestone.repository_name %> <%= milestone.title %>',
-                  new Date('<%= milestone.created_at.strftime('%Y-%m-%d') %>'),
-                  new Date('<%= milestone.due_on.strftime('%Y-%m-%d') %>'),
-                  null,
-                  <%= milestone.progress %>,
-                  null,
-              ],
-              <% end %>
-          ]);
-
+          ];
+          milestones.forEach((m) => {
+              header.push(
+                  [
+                      m.id,
+                      `${m.repository_name} ${m.title}`,
+                      new Date(m.created_at),
+                      new Date(m.due_on),
+                      null,
+                      Math.round((m.closed_issues / Math.max(1, (m.open_issues + m.closed_issues))) * 100),
+                      null,
+                  ]
+              )
+          });
           const chart = new google.visualization.Gantt(document.getElementById('chart_div'));
           google.visualization.events.addListener(chart, 'select', () => {
               const selection = chart.getSelection();
               selection.some((item) => {
-                  window.location.href = `<%= product_path %>?milestone_id=${data.getFormattedValue(item.row, 0)}`;
+                  window.location.href = `<%= product_path(@product) %>?milestone_id=${data.getFormattedValue(item.row, 0)}`;
                   return true;
               });
           });
-          chart.draw(data, {
+          chart.draw(google.visualization.arrayToDataTable(header), {
               width: window.innerWidth,
           });
       }
