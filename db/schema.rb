@@ -12,7 +12,10 @@
 
 ActiveRecord::Schema.define(version: 20180508142539) do
 
-  create_table "issues", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "issues", force: :cascade do |t|
     t.string "repository_name"
     t.integer "milestone_id"
     t.integer "number"
@@ -25,7 +28,7 @@ ActiveRecord::Schema.define(version: 20180508142539) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "milestones", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "milestones", force: :cascade do |t|
     t.string "repository_name"
     t.integer "number"
     t.string "title"
@@ -39,7 +42,7 @@ ActiveRecord::Schema.define(version: 20180508142539) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "organization_repositories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "organization_repositories", force: :cascade do |t|
     t.bigint "organization_id"
     t.bigint "repository_id"
     t.datetime "created_at", null: false
@@ -49,7 +52,7 @@ ActiveRecord::Schema.define(version: 20180508142539) do
     t.index ["repository_id"], name: "index_organization_repositories_on_repository_id"
   end
 
-  create_table "organization_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "organization_users", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "organization_id"
     t.datetime "created_at", null: false
@@ -59,7 +62,7 @@ ActiveRecord::Schema.define(version: 20180508142539) do
     t.index ["user_id"], name: "index_organization_users_on_user_id"
   end
 
-  create_table "organizations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "organizations", force: :cascade do |t|
     t.string "uid"
     t.string "name"
     t.string "encrypted_github_api_token"
@@ -69,7 +72,7 @@ ActiveRecord::Schema.define(version: 20180508142539) do
     t.index ["uid"], name: "index_organizations_on_uid", unique: true
   end
 
-  create_table "products", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "products", force: :cascade do |t|
     t.bigint "organization_id"
     t.string "repository_name"
     t.string "name"
@@ -78,7 +81,7 @@ ActiveRecord::Schema.define(version: 20180508142539) do
     t.index ["organization_id"], name: "index_products_on_organization_id"
   end
 
-  create_table "project_cards", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "project_cards", force: :cascade do |t|
     t.bigint "project_column_id"
     t.bigint "issue_id"
     t.text "note"
@@ -90,7 +93,7 @@ ActiveRecord::Schema.define(version: 20180508142539) do
     t.index ["project_column_id"], name: "index_project_cards_on_project_column_id"
   end
 
-  create_table "project_columns", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "project_columns", force: :cascade do |t|
     t.bigint "project_id"
     t.string "name"
     t.string "project_url"
@@ -99,7 +102,7 @@ ActiveRecord::Schema.define(version: 20180508142539) do
     t.index ["project_id"], name: "index_project_columns_on_project_id"
   end
 
-  create_table "projects", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "projects", force: :cascade do |t|
     t.string "repository_name"
     t.integer "number"
     t.string "owner_url"
@@ -111,7 +114,7 @@ ActiveRecord::Schema.define(version: 20180508142539) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "repositories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "repositories", force: :cascade do |t|
     t.string "full_name"
     t.string "html_url"
     t.string "state"
@@ -119,7 +122,7 @@ ActiveRecord::Schema.define(version: 20180508142539) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "users", force: :cascade do |t|
     t.string "provider"
     t.string "uid"
     t.string "first_name"

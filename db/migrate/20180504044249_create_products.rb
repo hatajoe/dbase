@@ -7,6 +7,5 @@ class CreateProducts < ActiveRecord::Migration[5.1]
 
       t.timestamps
     end
-    add_index :products, %i[organization_id repository_name], unique: true, name: 'organization_repository_unique'
   end
 end
