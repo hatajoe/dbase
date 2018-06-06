@@ -136,14 +136,17 @@ module GithubAccessible
 
   #
   # @param [String] event
-  # @param [String] payload_body
+  # @return [Sawyer::Resource] payload
   # @return [ApplicationRecord or NilClass]
   #
-  def parse_webhook_payload(event, payload_body)
-    @@events[event.to_sym].try(:call, )
+  def resolve_webhook(event, payload)
+    @@events[event.to_sym].try(:call, payload)
   end
 
-
+  #
+  # @param [String] payload_body
+  # @return [Sawyer::Resource] payload
+  #
   def parse_payload(payload_body)
     Octokit::Client.new.parse_payload(payload_body)
   end
