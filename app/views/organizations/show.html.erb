@@ -1,14 +1,9 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Uid:</strong>
-  <%= @organization.uid %>
-</p>
-
-<p>
-  <strong>Name:</strong>
-  <%= @organization.name %>
-</p>
-
-<%= link_to 'Edit', edit_organization_path(@organization) %> |
-<%= link_to 'Back', organizations_path %>
+<%=
+  render partial: '/kanban', locals: {
+      milestone: @milestone,
+      product: nil,
+      milestones: @organization.milestones_by_product(nil),
+      project_cards: -> (title) { @organization.project_cards_by_product_and_milestone(nil, @milestone).select { |card| card.project_column.name == title } },
+      current_path: organization_path(@organization),
+  }
+%>

@@ -4,6 +4,8 @@ class Project < ApplicationRecord
   has_one :repository, primary_key: :repository_name, foreign_key: :full_name
   has_many :project_columns, dependent: :destroy
 
+  enum title: ['To Do', 'In Progress', 'In Review', 'Done', 'Backlog', 'Wontfix']
+
   #
   # @param [Sawyer::Resource] payload
   # @return [Project]
@@ -20,16 +22,5 @@ class Project < ApplicationRecord
       name: payload.name,
       body: payload.body,
     )
-  end
-
-  #
-  # @return [Array<ProjectColumn>]
-  #
-  def sorted_project_columns
-    sorted = []
-    ['To Do', 'In Progress', 'In Review', 'Done', 'Backlog', 'Wontfix'].each do |name|
-      sorted.push(project_columns.find { |column| column.name == name })
-    end
-    sorted
   end
 end

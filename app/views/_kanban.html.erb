@@ -1,0 +1,116 @@
+<div class="container h-100">
+  <div class="h-50">
+    <p id="notice"><%= notice %></p>
+    <div class="products-inline-group-x">
+      <div class="row">
+        <div id="chart_div" data-json="<%= milestones.to_json %>"></div>
+      </div>
+    </div>
+  </div>
+  <div class="h-50">
+    <div class="products-inline-group-x h-100">
+      <h5><%= milestone.present? ? "#{milestone.repository_name} #{milestone.title}" : 'All milestones' %></h5>
+      <div class="row flex-nowrap h-100">
+        <% Project.titles.keys.each do |title| %>
+          <div class="col-sm-4">
+            <div class="sticky-top">
+              <%= title %>
+            </div>
+            <div class="container products-inline-group-y" style="height: 90% !important;">
+              <div class="flex-nowrap">
+                <% project_cards.call(title).each do |card| %>
+                  <% if card.note.present? %>
+                    <div class="card shadow-sm mb-2 bg-white rounded">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-sm-2">
+                            <% if card.issue.present? %>
+                              <%= link_to card.issue.html_url, target: :blank do %>
+                                <% if card.issue.opened? %>
+                                  <% if card.issue.issue? %>
+                                    <%= octicon 'issue-opened', style: 'fill: green' %>
+                                  <% elsif card.issue.pull_request? %>
+                                    <%= octicon 'git-pull-request', style: 'fill: green' %>
+                                  <% end %>
+                                <% elsif card.issue.closed? %>
+                                  <%= octicon 'issue-closed', style: 'fill: red' %>
+                                <% end %>
+                              <% end %>
+                            <% else %>
+                              <%= octicon 'note' %>
+                            <% end %>
+                          </div>
+                          <div class="col-sm-10">
+                            <p><small><%= card.note %></small></p>
+                            <div class="text-right">
+                              <% if card.issue.try(:milestone).present? %>
+                                <%= link_to card.issue.milestone.html_url, class: 'card-link', target: :blank do %>
+                                  <small><%= card.issue.milestone.repository_name %> <%= card.issue.milestone.title %></small>
+                                <% end %>
+                              <% end %>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+    $(document).on('turbolinks:load', () => {
+        google.charts.load('current', { 'packages': ['gantt'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function getMilestones() {
+            return $("#chart_div").data("json");
+        }
+
+        function drawChart() {
+            const milestones = getMilestones();
+            const header = [
+                [
+                    { label: 'Task ID', type: 'string' },
+                    { label: 'Task Name', type: 'string' },
+                    { label: 'Start Date', type: 'date' },
+                    { label: 'End Date', type: 'date' },
+                    { label: 'Duration', type: 'number' },
+                    { label: 'Percent Complete', type: 'number' },
+                    { label: 'Dependencies', type: 'string' },
+                ],
+            ];
+            milestones.forEach((m) => {
+                header.push(
+                    [
+                        m.id,
+                        `${m.repository_name} ${m.title}`,
+                        new Date(m.created_at),
+                        new Date(m.due_on),
+                        null,
+                        Math.round((m.closed_issues / Math.max(1, (m.open_issues + m.closed_issues))) * 100),
+                        null,
+                    ]
+                )
+            });
+            const data = google.visualization.arrayToDataTable(header);
+            const chart = new google.visualization.Gantt(document.getElementById('chart_div'));
+            google.visualization.events.addListener(chart, 'select', () => {
+                const selection = chart.getSelection();
+                selection.some((item) => {
+                    window.location.href = `<%= current_path %>?milestone_id=${data.getFormattedValue(item.row, 0)}`;
+                    return true;
+                });
+            });
+            chart.draw(data, {
+                width: window.innerWidth,
+            });
+        }
+    });
+</script>

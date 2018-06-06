@@ -17,7 +17,8 @@ class ProductsController < ApplicationController
   # GET /products/1
   # GET /products/1.json
   def show
-    @milestone_id = params[:milestone_id] || nil
+    @milestone = Milestone.find_by(id: params[:milestone_id])
+    @organization = @product.organization
   end
 
   # GET /products/new

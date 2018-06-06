@@ -23,7 +23,9 @@ class OrganizationsController < ApplicationController
 
   # GET /organizations/1
   # GET /organizations/1.json
-  def show; end
+  def show
+    @milestone = Milestone.find_by(id: params[:milestone_id])
+  end
 
   # GET /organizations/new
   def new

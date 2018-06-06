@@ -28,10 +28,11 @@ class ProjectCard < ApplicationRecord
   end
 
   #
-  # @param [Integer] milestone_id
+  # @param [Milestone] milestone
   # @return [TrueClass or FalseClass]
   #
-  def belongs_to?(milestone_id)
-    issue.blank? || issue.try(:milestone).try(:id) == milestone_id
+  def belongs_to?(milestone)
+    return false if project_column.project.repository_name != milestone.repository_name
+    issue.blank? || issue.try(:milestone).try(:id) == milestone.id
   end
 end
