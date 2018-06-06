@@ -25,6 +25,7 @@ class OrganizationsController < ApplicationController
   # GET /organizations/1.json
   def show
     @milestone = Milestone.find_by(id: params[:milestone_id])
+    redirect_to products_path if @organization.products.blank?
   end
 
   # GET /organizations/new
