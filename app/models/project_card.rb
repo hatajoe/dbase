@@ -28,6 +28,13 @@ class ProjectCard < ApplicationRecord
   end
 
   #
+  # @return [Task]
+  #
+  def task
+    @t ||= Task.new(issue.body) if issue.present?
+  end
+
+  #
   # @param [Milestone] milestone
   # @return [TrueClass or FalseClass]
   #
